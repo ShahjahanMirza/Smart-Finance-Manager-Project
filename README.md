@@ -9,24 +9,25 @@
 <li>Preview Data: View your financial data in a tabular format, allowing you to easily analyze and understand your spending patterns.</li>
 <li>Automatic Data Storage: Your financial data is automatically stored in a CSV file, ensuring that your information is always available for future reference.</li>
 
+
 **Getting Started**
 
 To run the Smart Finance Manager project locally, follow these steps:
 
 Clone the repository:
-git clone https://github.com/your-repo/smart-finance-manager.git
+> git clone https://github.com/your-repo/smart-finance-manager.git
 
 Navigate to the project directory:
-cd smart-finance-manager
+> cd smart-finance-manager
 
 Install the required dependencies:
-pip install -r requirements.txt
+> pip install -r requirements.txt
 
 Set up the required environment variables:
-GOOGLE_API_KEY: Obtain an API key from the Google Cloud Console for the Generative AI API.
+> GOOGLE_API_KEY: Obtain an API key from the Google Cloud Console for the Generative AI API.
 
 Run the Streamlit application:
-streamlit run main.py
+> streamlit run main.py
 
 The application will open in your default web browser. If not, you can access it by visiting the URL provided in the terminal.
 
