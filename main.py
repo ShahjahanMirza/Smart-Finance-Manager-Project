@@ -164,9 +164,7 @@ def main():
         st.dataframe(loaded_df, use_container_width=True)
     
 if __name__ == "__main__":
-<<<<<<< HEAD
     main()
-=======
-    main()
+
     
 >>>>>>> e54f99a1325bd0743f3b7dde983b029147a30357
