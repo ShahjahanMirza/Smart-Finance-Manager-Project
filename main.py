@@ -135,7 +135,7 @@ def main():
     
     if ask_button:
         out = retrieve_info(model, text=ask)
-        st.write(out)
+        st.write(out, unsafe_allow_html =True)
     
     # Upload Image
     uploaded_image = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
