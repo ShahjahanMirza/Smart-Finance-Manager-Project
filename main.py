@@ -153,7 +153,7 @@ def main():
     if prev_button:
         loaded_df = load_csv(curr_month)
         st.dataframe(loaded_df, use_container_width=True)
-    st.text_input()
+    
 if __name__ == "__main__":
     main()
     
