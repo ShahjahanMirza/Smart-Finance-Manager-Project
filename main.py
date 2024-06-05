@@ -68,7 +68,7 @@ def extract_info(model, text=None, image_path=None, docs=None):
         response = model.generate_content(
             [f"{SYSTEM_PROMPT_INFO}", image_parts[0]]
         )
-    print('extract_info - extract_info func', response.text)
+    # print('extract_info - extract_info func', response.text)
     return json.loads(response.text)
     
 curr_date = datetime.now().strftime("%Y-%m-%d")
@@ -83,7 +83,7 @@ def load_csv(curr_month):
         loaded_df.to_csv(f'{curr_month}_expense.csv', index=False)
     finally:
         loaded_df = pd.read_csv(f'{curr_month}_expense.csv')
-    print('loaded_df - load_csv func', loaded_df)
+    # print('loaded_df - load_csv func', loaded_df)
     return loaded_df
 
 def update_csv(loaded_df, curr_month, extracted_info):
@@ -91,7 +91,7 @@ def update_csv(loaded_df, curr_month, extracted_info):
     loaded_df = pd.concat([loaded_df, new_df], ignore_index=True)
     loaded_df['Date'] = pd.to_datetime(loaded_df['Date'], errors='coerce', format='%Y-%m-%d')
     loaded_df['Date'] = loaded_df['Date'].fillna(curr_date)
-    print('loaded_df - update_csv func', loaded_df)
+    # print('loaded_df - update_csv func', loaded_df)
     loaded_df.to_csv(curr_month+'_expense.csv', index=False)
 
 
@@ -105,12 +105,8 @@ def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE=SYSTEM_PROMPT_RETRIEVE, text=Non
     try:
         query_result = repl.run(code)
     except Exception as e:
-        print(f"Error executing generated code: {e}")
+        # print(f"Error executing generated code: {e}")
         return None
-<<<<<<< HEAD
-    
-=======
->>>>>>> e54f99a1325bd0743f3b7dde983b029147a30357
     return query_result
 
 
@@ -156,7 +152,7 @@ def main():
     if uploaded_image is not None:
         bytes_data = uploaded_image.getvalue()
         extracted_info = extract_info(model, image_path=uploaded_image)
-        print(extracted_info)
+        # print(extracted_info)
         loaded_df = load_csv(curr_month)
         update_csv(loaded_df, curr_month, extracted_info)
         uploaded_image.close()  
