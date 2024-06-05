@@ -16,7 +16,11 @@ repl = PythonREPL()
 # for model in genai.list_models():
 #     pprint.pprint(model.name)
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+try:
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+except:
+    GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+
 genai.configure(api_key=GOOGLE_API_KEY)
 model = "models/gemini-1.5-flash-latest" 
 
@@ -149,7 +153,7 @@ def main():
     if prev_button:
         loaded_df = load_csv(curr_month)
         st.dataframe(loaded_df, use_container_width=True)
-
+    st.text_input()
 if __name__ == "__main__":
     main()
     
