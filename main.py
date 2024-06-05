@@ -26,8 +26,8 @@ model = "models/gemini-1.5-flash-latest"
 
 
 SYSTEM_PROMPT_INFO = """
-You are a professional information extractor. From the provided context, you have to extract these 7 information and then output 
-them in JSON format. If date is not provided in the context, you can put None in Date. Dont write anything extra. Only JSON response is required. A single JSON is required containing list of values for each key.
+You are a professional information extractor. From the provided context, you have to extract these 5 information and then output 
+them in JSON format. If date is not provided in the context, you can put None in Date. For every amount, there should be a date. Dont write anything extra. Only JSON response is required. A single JSON is required containing list of values for each key.
 {
     "Date": ["YYYY-MM-DD", ], # The date of receiving or paying : datatype datetime
     "Category": ["category", ], # High level category of expense : datatype string
@@ -35,6 +35,7 @@ them in JSON format. If date is not provided in the context, you can put None in
     "Amount": ["amount", ], # amount paid : datatype integer
     "Type": ["type", ], # Expense or income : datatype string
 }
+CONSTRAINT: Make sure the arrays are not empty, the length of each array is equal, data types are correct and response is json.
 """
 
 SYSTEM_PROMPT_RETRIEVE = """
@@ -67,7 +68,7 @@ def extract_info(model, text=None, image_path=None, docs=None):
         response = model.generate_content(
             [f"{SYSTEM_PROMPT_INFO}", image_parts[0]]
         )
-    
+    print('extract_info - extract_info func', response.text)
     return json.loads(response.text)
     
 curr_date = datetime.now().strftime("%Y-%m-%d")
@@ -82,27 +83,36 @@ def load_csv(curr_month):
         loaded_df.to_csv(f'{curr_month}_expense.csv', index=False)
     finally:
         loaded_df = pd.read_csv(f'{curr_month}_expense.csv')
+    print('loaded_df - load_csv func', loaded_df)
     return loaded_df
 
 def update_csv(loaded_df, curr_month, extracted_info):
     new_df = pd.DataFrame(extracted_info)
-    loaded_df = loaded_df._append(new_df, ignore_index=True)
+    loaded_df = pd.concat([loaded_df, new_df], ignore_index=True)
     loaded_df['Date'] = pd.to_datetime(loaded_df['Date'], errors='coerce', format='%Y-%m-%d')
     loaded_df['Date'] = loaded_df['Date'].fillna(curr_date)
+    print('loaded_df - update_csv func', loaded_df)
     loaded_df.to_csv(curr_month+'_expense.csv', index=False)
 
 
-def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE, text=None, ):
+def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE=SYSTEM_PROMPT_RETRIEVE, text=None, ):
     model = genai.GenerativeModel(model)
     response = model.generate_content(SYSTEM_PROMPT_RETRIEVE.format(curr_month,text))
     code = response.text.replace("```","").replace('python','')
+    print("Generated Code:")
+    print(code)
     repl = PythonREPL()
-    query_result = repl.run(code)
+    try:
+        query_result = repl.run(code)
+    except Exception as e:
+        print(f"Error executing generated code: {e}")
+        return None
+    print('query_result - retrieve_info func', query_result)
     return query_result
 
 
 #                                                              For TEXT
-# extracted_info = extract_info(model, text="I bough a dozen of apples on 2024-05-01 for 15 dollars. My boss paid me my salary, which was 5,000 dollars")
+# extracted_info = extract_info(model, text="bought 10 apples for 5 dollars and paid 10 dollars to my friend")
 # loaded_df = load_csv(curr_month) 
 # update_csv(loaded_df, curr_month, extracted_info) 
     
@@ -135,7 +145,7 @@ def main():
     
     if ask_button:
         out = retrieve_info(model, text=ask)
-        st.write(out)
+        st.write(out, unsafe_allow_html =True)
     
     # Upload Image
     uploaded_image = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
@@ -149,11 +159,10 @@ def main():
         uploaded_image.close()  
 
     # Preview Data Section
-    prev_button = st.button("Preview Data",use_container_width=True, key='preview')
+    prev_button = st.button(label="Preview Data",use_container_width=True, key='preview')
     if prev_button:
         loaded_df = load_csv(curr_month)
         st.dataframe(loaded_df, use_container_width=True)
-    st.text_input()
+    
 if __name__ == "__main__":
     main()
-    
