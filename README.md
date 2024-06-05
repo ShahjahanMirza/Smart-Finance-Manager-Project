@@ -15,7 +15,7 @@
 To run the Smart Finance Manager project locally, follow these steps:
 
 Clone the repository:
-> git clone https://github.com/your-repo/smart-finance-manager.git
+> git clone `https://github.com/ShahjahanMirza/Smart-Finance-Manager-Project.git`
 
 Navigate to the project directory:
 > cd smart-finance-manager
