@@ -155,7 +155,7 @@ def main():
         uploaded_image.close()  
 
     # Preview Data Section
-    prev_button = st.button("Preview Data",use_container_width=True, key='preview')
+    prev_button = st.button(label="Preview Data",use_container_width=True, key='preview')
     if prev_button:
         loaded_df = load_csv(curr_month)
         st.dataframe(loaded_df, use_container_width=True)
