@@ -1,13 +1,13 @@
 **Smart Finance Manager**
 
-Smart Finance Manager is a powerful web application built using Streamlit, a Python library for creating interactive data applications. This project aims to simplify the process of managing your finances by providing an intuitive interface for adding expenses, tracking income, and retrieving valuable insights from your financial data.
+<p>Smart Finance Manager is a powerful web application built using Streamlit, a Python library for creating interactive data applications. This project aims to simplify the process of managing your finances by providing an intuitive interface for adding expenses, tracking income, and retrieving valuable insights from your financial data.</p>
 
 **Features**
 
-Add Expenses: Easily add your expenses by providing a text description or uploading an image. The application will intelligently extract relevant information such as date, category, description, amount, and type (expense or income).
-Ask Questions: Interact with the application by asking questions about your financial data. The application will generate Python code based on your query and provide the desired information.
-Preview Data: View your financial data in a tabular format, allowing you to easily analyze and understand your spending patterns.
-Automatic Data Storage: Your financial data is automatically stored in a CSV file, ensuring that your information is always available for future reference.
+<li>Add Expenses: Easily add your expenses by providing a text description or uploading an image. The application will intelligently extract relevant information such as date, category, description, amount, and type (expense or income).</li>
+<li>Ask Questions: Interact with the application by asking questions about your financial data. The application will generate Python code based on your query and provide the desired information.</li>
+<li>Preview Data: View your financial data in a tabular format, allowing you to easily analyze and understand your spending patterns.</li>
+<li>Automatic Data Storage: Your financial data is automatically stored in a CSV file, ensuring that your information is always available for future reference.</li>
 
 **Getting Started**
 
