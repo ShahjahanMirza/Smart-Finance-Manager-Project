@@ -96,8 +96,14 @@ def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE, text=None, ):
     model = genai.GenerativeModel(model)
     response = model.generate_content(SYSTEM_PROMPT_RETRIEVE.format(curr_month,text))
     code = response.text.replace("```","").replace('python','')
+    print("Generated Code:")
+    print(code)
     repl = PythonREPL()
-    query_result = repl.run(code)
+    try:
+        query_result = repl.run(code)
+    except Exception as e:
+        print(f"Error executing generated code: {e}")
+        return None
     return query_result
 
 
