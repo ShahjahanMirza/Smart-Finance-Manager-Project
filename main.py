@@ -107,7 +107,10 @@ def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE=SYSTEM_PROMPT_RETRIEVE, text=Non
     except Exception as e:
         print(f"Error executing generated code: {e}")
         return None
-    print('query_result - retrieve_info func', query_result)
+<<<<<<< HEAD
+    
+=======
+>>>>>>> e54f99a1325bd0743f3b7dde983b029147a30357
     return query_result
 
 
@@ -165,4 +168,9 @@ def main():
         st.dataframe(loaded_df, use_container_width=True)
     
 if __name__ == "__main__":
+<<<<<<< HEAD
     main()
+=======
+    main()
+    
+>>>>>>> e54f99a1325bd0743f3b7dde983b029147a30357
