@@ -9,8 +9,10 @@ from dotenv import load_dotenv
 load_dotenv()
 import json
 import streamlit as st
+import plotly.express as px
 from langchain_community.utilities import PythonREPL
 repl = PythonREPL()
+# from feedback import send_feedback
 
 
 
@@ -237,6 +239,42 @@ def main():
     if prev_button:
         loaded_df = load_csv(curr_month)
         st.dataframe(loaded_df, use_container_width=True)
+
+        
+        
+    # st.session_state['feedback'] = st.text_input("Feedback",)    
+    # print(st.session_state['feedback'])
+    # send_button = st.button(label="Send Feedback", use_container_width=True, key='send', on_click=send_feedback, args=(str(st.session_state['feedback']),))
+
+    
+    # Display Chart
+    
+    loaded_df = load_csv(curr_month)
+    
+    # Plot categories with expenses
+    only_expenses = loaded_df[loaded_df['Type'] == 'Expense']
+    category_expenses = only_expenses.groupby('Category')['Amount'].sum().reset_index()
+    fig1 = px.bar(category_expenses, x='Category', y='Amount', title='Categories with Expenses',)
+
+    # Plot expenses vs income
+    expense_income = loaded_df.groupby('Type')['Amount'].sum().reset_index()
+    fig2 = px.bar(expense_income, x='Type', y='Amount', title='Expenses vs Income', )
+
+    # Create two columns and display the charts side by side
+    col1, col2 = st.columns(2)
+
+    # Display the first chart in the first column
+    with col1:
+        st.plotly_chart(fig1, use_container_width=True)
+
+    # Display the second chart in the second column
+    with col2:
+        st.plotly_chart(fig2, use_container_width=True)
+
+    
     st.cache_data.clear()
+    
+    st.cache_data.clear()
+
 if __name__ == "__main__":
     main()
