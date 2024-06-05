@@ -92,7 +92,7 @@ def update_csv(loaded_df, curr_month, extracted_info):
     loaded_df.to_csv(curr_month+'_expense.csv', index=False)
 
 
-def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE, text=None, ):
+def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE=SYSTEM_PROMPT_RETRIEVE, text=None, ):
     model = genai.GenerativeModel(model)
     response = model.generate_content(SYSTEM_PROMPT_RETRIEVE.format(curr_month,text))
     code = response.text.replace("```","").replace('python','')
