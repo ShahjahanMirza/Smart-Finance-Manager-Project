@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# But do not ignore these specific files
+!main.py
+!june_expense.csv
+!guide.md
+!requirements.txt
+
+# Do not ignore .gitignore itself
+!.gitignore
