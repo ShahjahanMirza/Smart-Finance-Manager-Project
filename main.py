@@ -102,7 +102,7 @@ Example - Medical Receipt:
 Input: Image of a clinic receipt with "Total Charges: $150"
 Output:
 {
-    "Date": ["2024-05-13"],
+    "Date": [],
     "Category": ["Medical"],
     "Description": ["Clinic Consultation"],
     "Amount": [4400],
