@@ -1,5 +1,8 @@
 **Smart Finance Manager**
 
+![image](https://github.com/ShahjahanMirza/Smart-Finance-Manager-Project/assets/103453568/a6594a76-167f-49ba-a2d7-91698fc54464)
+
+
 <p>Smart Finance Manager is a powerful web application built using Streamlit, a Python library for creating interactive data applications. This project aims to simplify the process of managing your finances by providing an intuitive interface for adding expenses, tracking income, and retrieving valuable insights from your financial data.</p>
 
 **Features**
@@ -33,7 +36,7 @@ The application will open in your default web browser. If not, you can access it
 
 **Deployed Application**
 
-You can also access the deployed version of the Smart Finance Manager application by clicking the following link: [Smart Finance Manager](https://smart-finance-manager-project-fqem3wrvn98yneqe8vgdwx.streamlit.app/)
+You can also access the deployed version of the Smart Finance Manager application by clicking the following link: [Smart Finance Manager](https://smart-finance-manager.streamlit.app/)
 
 **Usage**
 
