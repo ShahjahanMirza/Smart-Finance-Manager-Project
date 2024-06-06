@@ -25,6 +25,9 @@ except:
 genai.configure(api_key=GOOGLE_API_KEY)
 model = "models/gemini-1.5-flash-latest" 
 
+curr_date = datetime.now().strftime("%Y-%m-%d")
+curr_month = datetime.now().strftime("%B").lower()    
+
 # SYSTEM_PROMPT_INFO = """
 # You are a professional information extractor. From the provided context, you have to extract these 5 information and then output them in JSON format. Each key should have an array of values with equal length.
 # If date is not provided in the context, you can put None in Date. For every amount, there should be a date. Dont write anything extra. Only JSON response is required. A single JSON is required containing list of values for each key.
@@ -46,6 +49,7 @@ CRITICAL RULES:
 3. Output only a valid, parseable JSON string. Do not include any text before or after the JSON.
 4. Each key MUST have an array of values with equal length.
 5. Make sure the arrays are not empty, the length of each array is equal, data types are correct and response is json.
+6. If Date is not found, use """+str(curr_date)+"""
 
 JSON Structure:
 {
@@ -139,8 +143,6 @@ def extract_info(model, text=None, image_path=None, image_prompt=None):
     print('extract_info - extract_info func', response.text)
     return json.loads(response.text)
     
-curr_date = datetime.now().strftime("%Y-%m-%d")
-curr_month = datetime.now().strftime("%B").lower()    
 
 
 def load_csv(curr_month):
