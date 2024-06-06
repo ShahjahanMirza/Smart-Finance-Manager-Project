@@ -12,9 +12,6 @@ import streamlit as st
 import plotly.express as px
 from langchain_community.utilities import PythonREPL
 repl = PythonREPL()
-# from feedback import send_feedback
-
-
 
 # import pprint
 # for model in genai.list_models():
@@ -27,7 +24,6 @@ except:
 
 genai.configure(api_key=GOOGLE_API_KEY)
 model = "models/gemini-1.5-flash-latest" 
-
 
 # SYSTEM_PROMPT_INFO = """
 # You are a professional information extractor. From the provided context, you have to extract these 5 information and then output them in JSON format. Each key should have an array of values with equal length.
@@ -44,11 +40,13 @@ model = "models/gemini-1.5-flash-latest"
 
 SYSTEM_PROMPT_INFO="""You are a professional information extractor. From the provided context (text or image), extract key financial information and output it in JSON format. Each key should have an array of values with equal length.
 
-Rules:
+CRITICAL RULES:
 1. Prioritize total or summary amounts over individual line items.
-2. Every amount must have a corresponding date.
-3. Output only the JSON response.
-CRITICAL INSTRUCTION: Your entire response MUST be a valid, parseable JSON string. Do not include any text before or after the JSON.
+2. Every amount must have a corresponding date, category, type, and amount.
+3. Output only a valid, parseable JSON string. Do not include any text before or after the JSON.
+4. Each key MUST have an array of values with equal length.
+5. Make sure the arrays are not empty, the length of each array is equal, data types are correct and response is json.
+
 JSON Structure:
 {
     "Date": ["YYYY-MM-DD", ...],  // Type: string
@@ -91,7 +89,7 @@ Guidelines for Receipts and Invoices:
    - Many receipts don't need line-item extraction.
    - Focus on the total amount and overall purpose.
 
-Data Validation:
+CRITICAL INSTRUCTION: Data Validation:
 - Ensure all arrays have equal length.
 - Validate data types.
 - Double-check before output.
@@ -106,13 +104,7 @@ Output:
     "Amount": [4400],
     "Type": ["Expense"]
 }
-
-Key Changes:
-1. Focus on totals, not line items.
-2. Understand receipt hierarchy.
-3. Infer categories from context.
-4. Use business-specific descriptions."""
-
+"""
 
 SYSTEM_PROMPT_RETRIEVE = """
 i have a csv named {}_expense.csv with these columns: Date,Category,Description,Amount,Type. 
@@ -162,6 +154,7 @@ def load_csv(curr_month):
     print('loaded_df - load_csv func', loaded_df)
     return loaded_df
 
+
 def update_csv(loaded_df, curr_month, extracted_info):
     new_df = pd.DataFrame(extracted_info)
     loaded_df = pd.concat([loaded_df, new_df], ignore_index=True)
@@ -185,7 +178,6 @@ def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE=SYSTEM_PROMPT_RETRIEVE, text=Non
         return None
     return query_result
 
-
 #                                                              For TEXT
 # extracted_info = extract_info(model, text="bought 10 apples for 5 dollars and paid 10 dollars to my friend")
 # loaded_df = load_csv(curr_month) 
@@ -199,7 +191,6 @@ def retrieve_info(model, SYSTEM_PROMPT_RETRIEVE=SYSTEM_PROMPT_RETRIEVE, text=Non
 #                                                              Retrieve Info
 # out = retrieve_info(model, text="create a dashboard of my expenses and incomes")
 # print(out)
-
 
 def main():
     st.title("Smart Finance Manager")
@@ -235,20 +226,23 @@ def main():
         uploaded_image.close()  
 
     # Preview Data Section
-    prev_button = st.button(label="Preview Data",use_container_width=True, key='preview')
+    col_prev, col_clear = st.columns(2)
+    
+    with col_prev: 
+        prev_button = st.button(label="Preview Data",use_container_width=True, key='preview')
+    
+    with col_clear:
+        clear_button = st.button(label="Clear Data",use_container_width=True, key='clear')
+        if clear_button:
+            loaded_df = load_csv(curr_month)
+            loaded_df.drop(loaded_df.index, inplace=True)
+            loaded_df.to_csv(curr_month+'_expense.csv', index=False)
+    
     if prev_button:
         loaded_df = load_csv(curr_month)
         st.dataframe(loaded_df, use_container_width=True)
-
-        
-        
-    # st.session_state['feedback'] = st.text_input("Feedback",)    
-    # print(st.session_state['feedback'])
-    # send_button = st.button(label="Send Feedback", use_container_width=True, key='send', on_click=send_feedback, args=(str(st.session_state['feedback']),))
-
     
     # Display Chart
-    
     loaded_df = load_csv(curr_month)
     
     # Plot categories with expenses
@@ -271,10 +265,7 @@ def main():
     with col2:
         st.plotly_chart(fig2, use_container_width=True)
 
-    
     st.cache_data.clear()
     
-    st.cache_data.clear()
-
 if __name__ == "__main__":
     main()
